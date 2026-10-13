@@ -1,6 +1,6 @@
 [
     {
-        "id": "8a55529076d3345c",
+        "id": "3ff6230fac6db885",
         "type": "tab",
         "label": "Flux 1",
         "disabled": false,
@@ -8,9 +8,9 @@
         "env": []
     },
     {
-        "id": "6de10d1f7eb50ab4",
+        "id": "1c642d195f55ab2b",
         "type": "group",
-        "z": "8a55529076d3345c",
+        "z": "3ff6230fac6db885",
         "style": {
             "stroke": "#999999",
             "stroke-opacity": "1",
@@ -21,24 +21,24 @@
             "color": "#767676"
         },
         "nodes": [
-            "0c498c7fdff1c512",
-            "a36af226877413d3",
-            "cb0477ce3d171f67",
-            "0fae8ae4f57c18fb",
-            "aabb52cd85a648bc",
-            "2bd523d1ddf1ddd7",
-            "4bf0b48a38de0b0f",
-            "c53d3e7e2c6948ca"
+            "687111aa1fe83782",
+            "ca6cdf5bc77cd606",
+            "aded373de8758dc2",
+            "3791d9840aad075c",
+            "b6527599230e064b",
+            "2c71d1c9d7ab4168",
+            "b6c334040ade6394",
+            "8350df9457823f05"
         ],
-        "x": 494,
-        "y": 439,
+        "x": 814,
+        "y": 479,
         "w": 472,
         "h": 202
     },
     {
-        "id": "f51cae157120d277",
+        "id": "932f0eeb0a218bfe",
         "type": "group",
-        "z": "8a55529076d3345c",
+        "z": "3ff6230fac6db885",
         "style": {
             "stroke": "#999999",
             "stroke-opacity": "1",
@@ -49,22 +49,50 @@
             "color": "#767676"
         },
         "nodes": [
-            "6ec5b1d5b6f2447c",
-            "f3a57df631ef8c86",
-            "5d3b0c23058ea761",
-            "b25ed80a1ed7301b",
-            "eb154c7994fbf47c",
-            "ed09f88a0b2a079d"
+            "891ec62e8506905c",
+            "796d6261535d779c",
+            "05e7cccde252802a",
+            "b04b4cd206155a96",
+            "ef074a862b7c318d",
+            "9fdbc9ecdcc4ec9a"
         ],
-        "x": 494,
-        "y": 179,
+        "x": 814,
+        "y": 219,
         "w": 532,
         "h": 222
     },
     {
-        "id": "584732cf90c22d02",
+        "id": "1972f623c6224d66",
+        "type": "group",
+        "z": "3ff6230fac6db885",
+        "style": {
+            "stroke": "#999999",
+            "stroke-opacity": "1",
+            "fill": "none",
+            "fill-opacity": "1",
+            "label": true,
+            "label-position": "nw",
+            "color": "#767676"
+        },
+        "nodes": [
+            "9228b0ee2c967074",
+            "bd455295189a665b",
+            "721f659754bc111a",
+            "ea628603d6915b0a",
+            "43af9825d7c5a765",
+            "427a25149a993c8c",
+            "8b99f236899e3a9c",
+            "c1e5f4dfb1b8e667"
+        ],
+        "x": 494,
+        "y": 719,
+        "w": 892,
+        "h": 242
+    },
+    {
+        "id": "521f3d4c967809af",
         "type": "debug",
-        "z": "8a55529076d3345c",
+        "z": "3ff6230fac6db885",
         "name": "debug 1",
         "active": true,
         "tosidebar": true,
@@ -74,52 +102,53 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 300,
-        "y": 320,
+        "x": 500,
+        "y": 600,
         "wires": []
     },
     {
-        "id": "3dec3920fee4d9a2",
+        "id": "8e59c90061f8eeb0",
         "type": "serial in",
-        "z": "8a55529076d3345c",
+        "z": "3ff6230fac6db885",
         "name": "",
         "serial": "5b9725065bf30fb2",
-        "x": 150,
-        "y": 280,
+        "x": 330,
+        "y": 440,
         "wires": [
             [
-                "584732cf90c22d02",
-                "c899de5382ad9e9d"
+                "521f3d4c967809af",
+                "99f515ac9c729dd8",
+                "1ac5791ccc1dcd21"
             ]
         ]
     },
     {
-        "id": "c899de5382ad9e9d",
+        "id": "99f515ac9c729dd8",
         "type": "json",
-        "z": "8a55529076d3345c",
+        "z": "3ff6230fac6db885",
         "name": "",
         "property": "payload",
         "action": "",
         "pretty": false,
-        "x": 330,
-        "y": 200,
+        "x": 670,
+        "y": 280,
         "wires": [
             [
-                "6ec5b1d5b6f2447c",
-                "f3a57df631ef8c86",
-                "661eb5c53e02cefd",
-                "0c498c7fdff1c512",
-                "a36af226877413d3",
-                "cb0477ce3d171f67",
-                "0fae8ae4f57c18fb"
+                "891ec62e8506905c",
+                "796d6261535d779c",
+                "3453fc5f03668489",
+                "687111aa1fe83782",
+                "ca6cdf5bc77cd606",
+                "aded373de8758dc2",
+                "3791d9840aad075c"
             ]
         ]
     },
     {
-        "id": "6ec5b1d5b6f2447c",
+        "id": "891ec62e8506905c",
         "type": "function",
-        "z": "8a55529076d3345c",
-        "g": "f51cae157120d277",
+        "z": "3ff6230fac6db885",
+        "g": "932f0eeb0a218bfe",
         "name": "extract_temperature()",
         "func": "msg.topic = \"temperature\";\nmsg.payload = msg.payload.status.temperature;\nconsole.log(\"temperature : \" + String(msg.payload));\nreturn msg;",
         "outputs": 1,
@@ -128,20 +157,20 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 620,
-        "y": 240,
+        "x": 940,
+        "y": 280,
         "wires": [
             [
-                "b25ed80a1ed7301b",
-                "ed09f88a0b2a079d"
+                "b04b4cd206155a96",
+                "9fdbc9ecdcc4ec9a"
             ]
         ]
     },
     {
-        "id": "f3a57df631ef8c86",
+        "id": "796d6261535d779c",
         "type": "function",
-        "z": "8a55529076d3345c",
-        "g": "f51cae157120d277",
+        "z": "3ff6230fac6db885",
+        "g": "932f0eeb0a218bfe",
         "name": "extract_light()",
         "func": "msg.topic = \"light\";\nmsg.payload = msg.payload.status.light;\nconsole.log(\"luminosite : \" + String(msg.payload));\nreturn msg;",
         "outputs": 1,
@@ -150,20 +179,475 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 640,
-        "y": 340,
+        "x": 960,
+        "y": 380,
         "wires": [
             [
-                "5d3b0c23058ea761",
-                "eb154c7994fbf47c"
+                "05e7cccde252802a",
+                "ef074a862b7c318d"
             ]
         ]
     },
     {
-        "id": "5d3b0c23058ea761",
+        "id": "3453fc5f03668489",
+        "type": "function",
+        "z": "3ff6230fac6db885",
+        "name": "formatting for csv",
+        "func": "msg.payload = msg.payload.status.temperature + \";\" + msg.payload.status.light;\nconsole.log(String(msg.payload));\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 910,
+        "y": 140,
+        "wires": [
+            [
+                "f6d2609fe0eca6ed"
+            ]
+        ]
+    },
+    {
+        "id": "f6d2609fe0eca6ed",
+        "type": "file",
+        "z": "3ff6230fac6db885",
+        "name": "",
+        "filename": "./sensors.csv",
+        "filenameType": "str",
+        "appendNewline": true,
+        "createDir": false,
+        "overwriteFile": "false",
+        "encoding": "none",
+        "x": 1150,
+        "y": 140,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "687111aa1fe83782",
+        "type": "function",
+        "z": "3ff6230fac6db885",
+        "g": "1c642d195f55ab2b",
+        "name": "extract_heat()",
+        "func": "msg.topic = \"heat\";\nmsg.payload = msg.payload.status.heat;\nconsole.log(\"heat : \" + String(msg.payload));\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 920,
+        "y": 520,
+        "wires": [
+            [
+                "b6527599230e064b"
+            ]
+        ]
+    },
+    {
+        "id": "ca6cdf5bc77cd606",
+        "type": "function",
+        "z": "3ff6230fac6db885",
+        "g": "1c642d195f55ab2b",
+        "name": "extract_cold()",
+        "func": "msg.topic = \"cold\";\nmsg.payload = msg.payload.status.cold;\nconsole.log(\"cold : \" + String(msg.payload));\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 920,
+        "y": 560,
+        "wires": [
+            [
+                "2c71d1c9d7ab4168"
+            ]
+        ]
+    },
+    {
+        "id": "aded373de8758dc2",
+        "type": "function",
+        "z": "3ff6230fac6db885",
+        "g": "1c642d195f55ab2b",
+        "name": "extract_fire()",
+        "func": "msg.topic = \"fire\";\nmsg.payload = msg.payload.status.fire;\nconsole.log(\"fire : \" + String(msg.payload));\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 910,
+        "y": 600,
+        "wires": [
+            [
+                "8350df9457823f05"
+            ]
+        ]
+    },
+    {
+        "id": "3791d9840aad075c",
+        "type": "function",
+        "z": "3ff6230fac6db885",
+        "g": "1c642d195f55ab2b",
+        "name": "extract_fanspeed()",
+        "func": "msg.topic = \"fanspeed\";\nmsg.payload = msg.payload.status.fanspeed;\nconsole.log(\"fanspeed : \" + String(msg.payload));\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 930,
+        "y": 640,
+        "wires": [
+            [
+                "b6c334040ade6394"
+            ]
+        ]
+    },
+    {
+        "id": "9228b0ee2c967074",
+        "type": "serial out",
+        "z": "3ff6230fac6db885",
+        "g": "1972f623c6224d66",
+        "name": "COM5",
+        "serial": "5b9725065bf30fb2",
+        "x": 1230,
+        "y": 800,
+        "wires": []
+    },
+    {
+        "id": "9aea73b1c3c8acb4",
+        "type": "comment",
+        "z": "3ff6230fac6db885",
+        "name": "Jauges et Graphes sur la temperature et luminosité",
+        "info": "",
+        "x": 1030,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "bf0993cd60caf4d1",
+        "type": "comment",
+        "z": "3ff6230fac6db885",
+        "name": "Labels du statut des variables",
+        "info": "",
+        "x": 960,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "bd455295189a665b",
+        "type": "template",
+        "z": "3ff6230fac6db885",
+        "g": "1972f623c6224d66",
+        "name": "Convert sliders to JSON",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "{\"{{topic}}\" : {{payload}}} ",
+        "output": "str",
+        "x": 1030,
+        "y": 840,
+        "wires": [
+            [
+                "721f659754bc111a",
+                "9228b0ee2c967074"
+            ]
+        ]
+    },
+    {
+        "id": "721f659754bc111a",
+        "type": "debug",
+        "z": "3ff6230fac6db885",
+        "g": "1972f623c6224d66",
+        "name": "Debug Sliders",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1260,
+        "y": 880,
+        "wires": []
+    },
+    {
+        "id": "ea628603d6915b0a",
+        "type": "ui_slider",
+        "z": "3ff6230fac6db885",
+        "g": "1972f623c6224d66",
+        "name": "",
+        "label": "Seuil Max de temperature",
+        "tooltip": "",
+        "group": "f72a74e974740c0f",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "outs": "end",
+        "topic": "temp_max",
+        "topicType": "str",
+        "min": 0,
+        "max": "100",
+        "step": 1,
+        "className": "",
+        "x": 710,
+        "y": 760,
+        "wires": [
+            [
+                "bd455295189a665b"
+            ]
+        ]
+    },
+    {
+        "id": "43af9825d7c5a765",
+        "type": "ui_slider",
+        "z": "3ff6230fac6db885",
+        "g": "1972f623c6224d66",
+        "name": "",
+        "label": "Seuil Min de temperature",
+        "tooltip": "",
+        "group": "f72a74e974740c0f",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "outs": "end",
+        "topic": "temp_min",
+        "topicType": "str",
+        "min": 0,
+        "max": "100",
+        "step": 1,
+        "className": "",
+        "x": 710,
+        "y": 800,
+        "wires": [
+            [
+                "bd455295189a665b"
+            ]
+        ]
+    },
+    {
+        "id": "427a25149a993c8c",
+        "type": "ui_slider",
+        "z": "3ff6230fac6db885",
+        "g": "1972f623c6224d66",
+        "name": "",
+        "label": "Seuil Max du ventilateur",
+        "tooltip": "",
+        "group": "f72a74e974740c0f",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "outs": "end",
+        "topic": "fan_max",
+        "topicType": "str",
+        "min": 0,
+        "max": "100",
+        "step": 1,
+        "className": "",
+        "x": 710,
+        "y": 840,
+        "wires": [
+            [
+                "bd455295189a665b"
+            ]
+        ]
+    },
+    {
+        "id": "8b99f236899e3a9c",
+        "type": "ui_slider",
+        "z": "3ff6230fac6db885",
+        "g": "1972f623c6224d66",
+        "name": "",
+        "label": "Seuil detection incendie Luminosité",
+        "tooltip": "",
+        "group": "f72a74e974740c0f",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "outs": "end",
+        "topic": "light_max_fire",
+        "topicType": "str",
+        "min": 0,
+        "max": "100",
+        "step": 1,
+        "className": "",
+        "x": 680,
+        "y": 920,
+        "wires": [
+            [
+                "bd455295189a665b"
+            ]
+        ]
+    },
+    {
+        "id": "c1e5f4dfb1b8e667",
+        "type": "ui_slider",
+        "z": "3ff6230fac6db885",
+        "g": "1972f623c6224d66",
+        "name": "",
+        "label": "Seuil detection incendie Temperature",
+        "tooltip": "",
+        "group": "f72a74e974740c0f",
+        "order": 5,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "outs": "end",
+        "topic": "temp_max_fire",
+        "topicType": "str",
+        "min": 0,
+        "max": "100",
+        "step": 1,
+        "className": "",
+        "x": 670,
+        "y": 880,
+        "wires": [
+            [
+                "bd455295189a665b"
+            ]
+        ]
+    },
+    {
+        "id": "b6527599230e064b",
+        "type": "ui_text",
+        "z": "3ff6230fac6db885",
+        "g": "1c642d195f55ab2b",
+        "group": "ec58d8bcf48e83d7",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Chauffage :",
+        "format": "{{msg.payload}}",
+        "layout": "row-left",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 1150,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "2c71d1c9d7ab4168",
+        "type": "ui_text",
+        "z": "3ff6230fac6db885",
+        "g": "1c642d195f55ab2b",
+        "group": "ec58d8bcf48e83d7",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Climatisation :",
+        "format": "{{msg.payload}}",
+        "layout": "row-left",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 1160,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "b6c334040ade6394",
+        "type": "ui_text",
+        "z": "3ff6230fac6db885",
+        "g": "1c642d195f55ab2b",
+        "group": "ec58d8bcf48e83d7",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Vitesse ventilateur :",
+        "format": "{{msg.payload}}",
+        "layout": "row-left",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 1170,
+        "y": 640,
+        "wires": []
+    },
+    {
+        "id": "ef074a862b7c318d",
+        "type": "ui_gauge",
+        "z": "3ff6230fac6db885",
+        "g": "932f0eeb0a218bfe",
+        "name": "",
+        "group": "511c4aa1942afe49",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Jauge Luminosité",
+        "label": "lum",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "4095",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 1210,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "9fdbc9ecdcc4ec9a",
+        "type": "ui_gauge",
+        "z": "3ff6230fac6db885",
+        "g": "932f0eeb0a218bfe",
+        "name": "",
+        "group": "511c4aa1942afe49",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Jauge Temperature",
+        "label": "°C",
+        "format": "{{value}}",
+        "min": "-15",
+        "max": "45",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 1210,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "05e7cccde252802a",
         "type": "ui_chart",
-        "z": "8a55529076d3345c",
-        "g": "f51cae157120d277",
+        "z": "3ff6230fac6db885",
+        "g": "932f0eeb0a218bfe",
         "name": "",
         "group": "d379499e8e60ba5a",
         "order": 1,
@@ -198,17 +682,17 @@
         "outputs": 1,
         "useDifferentColor": false,
         "className": "",
-        "x": 900,
-        "y": 360,
+        "x": 1220,
+        "y": 400,
         "wires": [
             []
         ]
     },
     {
-        "id": "b25ed80a1ed7301b",
+        "id": "b04b4cd206155a96",
         "type": "ui_chart",
-        "z": "8a55529076d3345c",
-        "g": "f51cae157120d277",
+        "z": "3ff6230fac6db885",
+        "g": "932f0eeb0a218bfe",
         "name": "",
         "group": "d379499e8e60ba5a",
         "order": 2,
@@ -243,410 +727,17 @@
         "outputs": 1,
         "useDifferentColor": false,
         "className": "",
-        "x": 900,
-        "y": 260,
+        "x": 1220,
+        "y": 300,
         "wires": [
             []
         ]
     },
     {
-        "id": "661eb5c53e02cefd",
-        "type": "function",
-        "z": "8a55529076d3345c",
-        "name": "formatting for csv",
-        "func": "msg.payload = msg.payload.status.temperature + \";\" + msg.payload.status.light;\nconsole.log(String(msg.payload));\nreturn msg;\n",
-        "outputs": 1,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 590,
-        "y": 100,
-        "wires": [
-            [
-                "a9d23f6137f865b4"
-            ]
-        ]
-    },
-    {
-        "id": "a9d23f6137f865b4",
-        "type": "file",
-        "z": "8a55529076d3345c",
-        "name": "",
-        "filename": "C:\\Users\\yelzb\\OneDrive - Université Côte d'Azur\\Semestre 7\\IoT\\sensors.csv",
-        "filenameType": "str",
-        "appendNewline": true,
-        "createDir": false,
-        "overwriteFile": "false",
-        "encoding": "none",
-        "x": 1030,
-        "y": 100,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "eb154c7994fbf47c",
-        "type": "ui_gauge",
-        "z": "8a55529076d3345c",
-        "g": "f51cae157120d277",
-        "name": "",
-        "group": "511c4aa1942afe49",
-        "order": 2,
-        "width": 0,
-        "height": 0,
-        "gtype": "gage",
-        "title": "Jauge Luminosité",
-        "label": "lum",
-        "format": "{{value}}",
-        "min": 0,
-        "max": "4095",
-        "colors": [
-            "#00b500",
-            "#e6e600",
-            "#ca3838"
-        ],
-        "seg1": "",
-        "seg2": "",
-        "diff": false,
-        "className": "",
-        "x": 890,
-        "y": 320,
-        "wires": []
-    },
-    {
-        "id": "ed09f88a0b2a079d",
-        "type": "ui_gauge",
-        "z": "8a55529076d3345c",
-        "g": "f51cae157120d277",
-        "name": "",
-        "group": "511c4aa1942afe49",
-        "order": 1,
-        "width": 0,
-        "height": 0,
-        "gtype": "gage",
-        "title": "Jauge Temperature",
-        "label": "°C",
-        "format": "{{value}}",
-        "min": "-15",
-        "max": "45",
-        "colors": [
-            "#00b500",
-            "#e6e600",
-            "#ca3838"
-        ],
-        "seg1": "",
-        "seg2": "",
-        "diff": false,
-        "className": "",
-        "x": 890,
-        "y": 220,
-        "wires": []
-    },
-    {
-        "id": "0c498c7fdff1c512",
-        "type": "function",
-        "z": "8a55529076d3345c",
-        "g": "6de10d1f7eb50ab4",
-        "name": "extract_heat()",
-        "func": "msg.topic = \"heat\";\nmsg.payload = msg.payload.status.heat;\nconsole.log(\"heat : \" + String(msg.payload));\nreturn msg;",
-        "outputs": 1,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 600,
-        "y": 480,
-        "wires": [
-            [
-                "aabb52cd85a648bc"
-            ]
-        ]
-    },
-    {
-        "id": "a36af226877413d3",
-        "type": "function",
-        "z": "8a55529076d3345c",
-        "g": "6de10d1f7eb50ab4",
-        "name": "extract_cold()",
-        "func": "msg.topic = \"cold\";\nmsg.payload = msg.payload.status.cold;\nconsole.log(\"cold : \" + String(msg.payload));\nreturn msg;",
-        "outputs": 1,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 600,
-        "y": 520,
-        "wires": [
-            [
-                "2bd523d1ddf1ddd7"
-            ]
-        ]
-    },
-    {
-        "id": "cb0477ce3d171f67",
-        "type": "function",
-        "z": "8a55529076d3345c",
-        "g": "6de10d1f7eb50ab4",
-        "name": "extract_fire()",
-        "func": "msg.topic = \"fire\";\nmsg.payload = msg.payload.status.fire;\nconsole.log(\"fire : \" + String(msg.payload));\nreturn msg;",
-        "outputs": 1,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 590,
-        "y": 560,
-        "wires": [
-            [
-                "c53d3e7e2c6948ca"
-            ]
-        ]
-    },
-    {
-        "id": "0fae8ae4f57c18fb",
-        "type": "function",
-        "z": "8a55529076d3345c",
-        "g": "6de10d1f7eb50ab4",
-        "name": "extract_fanspeed()",
-        "func": "msg.topic = \"fanspeed\";\nmsg.payload = msg.payload.status.fanspeed;\nconsole.log(\"fanspeed : \" + String(msg.payload));\nreturn msg;",
-        "outputs": 1,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 610,
-        "y": 600,
-        "wires": [
-            [
-                "4bf0b48a38de0b0f"
-            ]
-        ]
-    },
-    {
-        "id": "aabb52cd85a648bc",
-        "type": "ui_text",
-        "z": "8a55529076d3345c",
-        "g": "6de10d1f7eb50ab4",
-        "group": "ec58d8bcf48e83d7",
-        "order": 1,
-        "width": 0,
-        "height": 0,
-        "name": "",
-        "label": "Chauffage :",
-        "format": "{{msg.payload}}",
-        "layout": "row-left",
-        "className": "",
-        "style": false,
-        "font": "",
-        "fontSize": 16,
-        "color": "#000000",
-        "x": 830,
-        "y": 480,
-        "wires": []
-    },
-    {
-        "id": "2bd523d1ddf1ddd7",
-        "type": "ui_text",
-        "z": "8a55529076d3345c",
-        "g": "6de10d1f7eb50ab4",
-        "group": "ec58d8bcf48e83d7",
-        "order": 2,
-        "width": 0,
-        "height": 0,
-        "name": "",
-        "label": "Climatisation :",
-        "format": "{{msg.payload}}",
-        "layout": "row-left",
-        "className": "",
-        "style": false,
-        "font": "",
-        "fontSize": 16,
-        "color": "#000000",
-        "x": 840,
-        "y": 520,
-        "wires": []
-    },
-    {
-        "id": "4bf0b48a38de0b0f",
-        "type": "ui_text",
-        "z": "8a55529076d3345c",
-        "g": "6de10d1f7eb50ab4",
-        "group": "ec58d8bcf48e83d7",
-        "order": 4,
-        "width": 0,
-        "height": 0,
-        "name": "",
-        "label": "Vitesse ventilateur :",
-        "format": "{{msg.payload}}",
-        "layout": "row-left",
-        "className": "",
-        "style": false,
-        "font": "",
-        "fontSize": 16,
-        "color": "#000000",
-        "x": 850,
-        "y": 600,
-        "wires": []
-    },
-    {
-        "id": "3654b44d8b9550cf",
-        "type": "serial out",
-        "z": "8a55529076d3345c",
-        "name": "COM5",
-        "serial": "5b9725065bf30fb2",
-        "x": 910,
-        "y": 740,
-        "wires": []
-    },
-    {
-        "id": "5c1511482172b488",
-        "type": "ui_slider",
-        "z": "8a55529076d3345c",
-        "name": "",
-        "label": "Seuil Max de temperature",
-        "tooltip": "",
-        "group": "f72a74e974740c0f",
-        "order": 1,
-        "width": 0,
-        "height": 0,
-        "passthru": true,
-        "outs": "end",
-        "topic": "temp_max",
-        "topicType": "str",
-        "min": 0,
-        "max": "100",
-        "step": 1,
-        "className": "",
-        "x": 390,
-        "y": 700,
-        "wires": [
-            [
-                "8cf0b3992692adf0"
-            ]
-        ]
-    },
-    {
-        "id": "dee9143bb6b254c3",
-        "type": "comment",
-        "z": "8a55529076d3345c",
-        "name": "Jauges et Graphes sur la temperature et luminosité",
-        "info": "",
-        "x": 710,
-        "y": 180,
-        "wires": []
-    },
-    {
-        "id": "8d7a6da0e5f19339",
-        "type": "comment",
-        "z": "8a55529076d3345c",
-        "name": "Labels du statut des variables",
-        "info": "",
-        "x": 640,
-        "y": 440,
-        "wires": []
-    },
-    {
-        "id": "8cf0b3992692adf0",
-        "type": "template",
-        "z": "8a55529076d3345c",
-        "name": "Convert sliders to JSON",
-        "field": "payload",
-        "fieldType": "msg",
-        "format": "handlebars",
-        "syntax": "mustache",
-        "template": "{\"{{topic}}\" : {{payload}}} ",
-        "output": "str",
-        "x": 710,
-        "y": 780,
-        "wires": [
-            [
-                "ea417623f9291f79",
-                "3654b44d8b9550cf"
-            ]
-        ]
-    },
-    {
-        "id": "9dfd7be774cbedf4",
-        "type": "ui_slider",
-        "z": "8a55529076d3345c",
-        "name": "",
-        "label": "Seuil Min de temperature",
-        "tooltip": "",
-        "group": "f72a74e974740c0f",
-        "order": 2,
-        "width": 0,
-        "height": 0,
-        "passthru": true,
-        "outs": "end",
-        "topic": "temp_min",
-        "topicType": "str",
-        "min": 0,
-        "max": "100",
-        "step": 1,
-        "className": "",
-        "x": 390,
-        "y": 740,
-        "wires": [
-            [
-                "8cf0b3992692adf0"
-            ]
-        ]
-    },
-    {
-        "id": "ea417623f9291f79",
-        "type": "debug",
-        "z": "8a55529076d3345c",
-        "name": "Debug Sliders",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 940,
-        "y": 820,
-        "wires": []
-    },
-    {
-        "id": "bd9b216d6e1f0773",
-        "type": "ui_slider",
-        "z": "8a55529076d3345c",
-        "name": "",
-        "label": "Seuil Max du ventilateur",
-        "tooltip": "",
-        "group": "f72a74e974740c0f",
-        "order": 3,
-        "width": 0,
-        "height": 0,
-        "passthru": true,
-        "outs": "end",
-        "topic": "fan_max",
-        "topicType": "str",
-        "min": 0,
-        "max": "100",
-        "step": 1,
-        "className": "",
-        "x": 390,
-        "y": 780,
-        "wires": [
-            [
-                "8cf0b3992692adf0"
-            ]
-        ]
-    },
-    {
-        "id": "c53d3e7e2c6948ca",
+        "id": "8350df9457823f05",
         "type": "ui_led",
-        "z": "8a55529076d3345c",
-        "g": "6de10d1f7eb50ab4",
+        "z": "3ff6230fac6db885",
+        "g": "1c642d195f55ab2b",
         "order": 3,
         "group": "ec58d8bcf48e83d7",
         "width": 0,
@@ -665,63 +756,67 @@
         "shape": "circle",
         "showGlow": true,
         "name": "",
-        "x": 810,
-        "y": 560,
+        "x": 1130,
+        "y": 600,
         "wires": []
     },
     {
-        "id": "6289b6d2f55514d0",
-        "type": "ui_slider",
-        "z": "8a55529076d3345c",
+        "id": "1ac5791ccc1dcd21",
+        "type": "exec",
+        "z": "3ff6230fac6db885",
+        "command": "python3 -u \"./validator/validate_stdin.py\"",
+        "addpay": "",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
         "name": "",
-        "label": "Seuil detection incendie Luminosité",
-        "tooltip": "",
-        "group": "f72a74e974740c0f",
-        "order": 4,
-        "width": 0,
-        "height": 0,
-        "passthru": true,
-        "outs": "end",
-        "topic": "light_max_fire",
-        "topicType": "str",
-        "min": 0,
-        "max": "100",
-        "step": 1,
-        "className": "",
-        "x": 360,
-        "y": 860,
+        "x": 600,
+        "y": 100,
         "wires": [
             [
-                "8cf0b3992692adf0"
-            ]
+                "a32b6319af571ef6"
+            ],
+            [],
+            []
         ]
     },
     {
-        "id": "b15fbb7123a6ca8c",
-        "type": "ui_slider",
-        "z": "8a55529076d3345c",
-        "name": "",
-        "label": "Seuil detection incendie Temperature",
-        "tooltip": "",
-        "group": "f72a74e974740c0f",
-        "order": 5,
-        "width": 0,
-        "height": 0,
-        "passthru": true,
-        "outs": "end",
-        "topic": "temp_max_fire",
-        "topicType": "str",
-        "min": 0,
-        "max": "100",
-        "step": 1,
-        "className": "",
-        "x": 350,
-        "y": 820,
-        "wires": [
-            [
-                "8cf0b3992692adf0"
-            ]
-        ]
+        "id": "5b1d9133116b322b",
+        "type": "comment",
+        "z": "3ff6230fac6db885",
+        "name": "Sliders de configuration des variables",
+        "info": "",
+        "x": 670,
+        "y": 720,
+        "wires": []
+    },
+    {
+        "id": "832c8efeeda4e231",
+        "type": "comment",
+        "z": "3ff6230fac6db885",
+        "name": "Execution du validateur ne fonctionne pas",
+        "info": "",
+        "x": 540,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "a32b6319af571ef6",
+        "type": "debug",
+        "z": "3ff6230fac6db885",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1000,
+        "y": 60,
+        "wires": []
     },
     {
         "id": "5b9725065bf30fb2",
@@ -744,24 +839,13 @@
         "responsetimeout": 10000
     },
     {
-        "id": "d379499e8e60ba5a",
+        "id": "f72a74e974740c0f",
         "type": "ui_group",
-        "name": "Graphiques Capteurs ESP",
-        "tab": "96afef421d5463d6",
-        "order": 2,
-        "disp": true,
-        "width": 6,
-        "collapse": false,
-        "className": ""
-    },
-    {
-        "id": "511c4aa1942afe49",
-        "type": "ui_group",
-        "name": "Jauges",
-        "tab": "96afef421d5463d6",
+        "name": "Sliders",
+        "tab": "4d54c7bab257b638",
         "order": 1,
         "disp": true,
-        "width": 6,
+        "width": 15,
         "collapse": false,
         "className": ""
     },
@@ -777,24 +861,26 @@
         "className": ""
     },
     {
-        "id": "f72a74e974740c0f",
+        "id": "511c4aa1942afe49",
         "type": "ui_group",
-        "name": "Sliders",
-        "tab": "4d54c7bab257b638",
+        "name": "Jauges",
+        "tab": "96afef421d5463d6",
         "order": 1,
         "disp": true,
-        "width": 15,
+        "width": 6,
         "collapse": false,
         "className": ""
     },
     {
-        "id": "96afef421d5463d6",
-        "type": "ui_tab",
-        "name": "Régulateur de temperature",
-        "icon": "dashboard",
-        "order": 1,
-        "disabled": false,
-        "hidden": false
+        "id": "d379499e8e60ba5a",
+        "type": "ui_group",
+        "name": "Graphiques Capteurs ESP",
+        "tab": "96afef421d5463d6",
+        "order": 2,
+        "disp": true,
+        "width": 6,
+        "collapse": false,
+        "className": ""
     },
     {
         "id": "4d54c7bab257b638",
@@ -806,7 +892,16 @@
         "hidden": false
     },
     {
-        "id": "01a0915abbc312b4",
+        "id": "96afef421d5463d6",
+        "type": "ui_tab",
+        "name": "Régulateur de temperature",
+        "icon": "dashboard",
+        "order": 1,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "ac178c70f30bc649",
         "type": "global-config",
         "env": [],
         "modules": {
