@@ -764,7 +764,7 @@
         "id": "1ac5791ccc1dcd21",
         "type": "exec",
         "z": "3ff6230fac6db885",
-        "command": "python3 -u \"./validator/validate_stdin.py\"",
+        "command": "python3 -u \"./validator/val.py\"",
         "addpay": "",
         "append": "",
         "useSpawn": "false",
@@ -772,7 +772,7 @@
         "winHide": false,
         "oldrc": false,
         "name": "",
-        "x": 600,
+        "x": 560,
         "y": 100,
         "wires": [
             [
@@ -901,7 +901,7 @@
         "hidden": false
     },
     {
-        "id": "ac178c70f30bc649",
+        "id": "eaa2baae7b3c4844",
         "type": "global-config",
         "env": [],
         "modules": {
