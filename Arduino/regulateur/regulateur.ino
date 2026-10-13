@@ -12,18 +12,18 @@
 #define RADPIN    21  // LED radiateur (Rouge)
 #define FANPIN    27  // Ventilateur
 
-// Seuils :
-#define SH          30.00 // Seuil superieur de temperature (Activation Clim)
-#define SB          28.00 // Seuil inferieur de temperature (Activation Radiateur)
-#define SH_VENTILO  35.00 // Seuil superieur du ventilateur (Entre 30 et 35°C, la vitesse monte graduellement)
-#define TEMP_FEU    31.00 // Seuil de temperature pour detection d'incendie
-#define LUM_FEU     300   // Seuil de luminosité pour detection d'incendie
-
 #define NB_LEDS 5 // Nombres de LED de la LED strip
 
 OneWire oneWire(23); // Pour utiliser une entite oneWire sur le port 23 (Capteur de temperature)
 DallasTemperature tempSensor(&oneWire); // Cette entite est utilisee par le capteur de temperature
 Adafruit_NeoPixel strip(NB_LEDS, STRIP_PIN, NEO_GRB + NEO_KHZ800); // Utilisé pour la LED Strip
+
+// Seuils :
+float SH         = 30.00;  // Seuil superieur de temperature (Activation Clim)
+float SB         = 28.00;  // Seuil inferieur de temperature (Activation Radiateur)
+float SH_VENTILO = 35.00;  // Seuil superieur du ventilateur (Entre 30 et 35°C, la vitesse monte graduellement)
+float TEMP_FEU   = 31.00;  // Seuil de temperature pour detection d'incendie
+float LUM_FEU    = 300.00; // Seuil de luminosité pour detection d'incendie
 
 void setup(void){
   Serial.begin(9600);
@@ -52,16 +52,42 @@ void loop(void){
 
   // setup du json
   char payload[512];
-  StaticJsonDocument<512> jdoc;
+  StaticJsonDocument<512> json;
+
+  // Recuperation des variables depuis Serial in
+
+
+  if (Serial.available() > 0) {
+    String incomingString = Serial.readString();
+    incomingString.trim(); 
+
+    StaticJsonDocument<256> incoming_json;
+    deserializeJson(incoming_json, incomingString);
+
+    // JSON reçu ressemble à ça : {"temp_max":50}
+    // Pour le moment parsing pas très propre, a revoir
+
+    String temp_max       = incoming_json["temp_max"];
+    String temp_min       = incoming_json["temp_min"];
+    String fan_max        = incoming_json["fan_max"];
+    String temp_max_fire  = incoming_json["temp_max_fire"];
+    String light_max_fire = incoming_json["light_max_fire"];
+
+    if (temp_max != "null") {SH = temp_max.toFloat();}
+    if (temp_min != "null") {SB = temp_min.toFloat();}
+    if (fan_max != "null") {SH_VENTILO = fan_max.toFloat();}
+    if (temp_max_fire != "null") {TEMP_FEU = temp_max_fire.toFloat();}
+    if (light_max_fire != "null") {LUM_FEU = light_max_fire.toFloat();}
+  }
 
   // Capteur luminosité
   brightness = analogRead(A5); //  lecture sur le pin analog 5
-  jdoc["status"]["light"] = 4095 - brightness;
+  json["status"]["light"] = 4095 - brightness;
 
   // Capteur temperature
   tempSensor.requestTemperaturesByIndex(0); // Le capteur 0 realise une acquisition
   t = tempSensor.getTempCByIndex(0); // Recuperation de la temperature en °C
-  jdoc["status"]["temperature"] = t;
+  json["status"]["temperature"] = t;
 
   // -- Gestion des seuils -- //
   
@@ -100,43 +126,43 @@ void loop(void){
     strip_g = 255;
   }
 
-  jdoc["status"]["fire"] = fire_detected;
-  jdoc["status"]["heat"] = rad_led_on ? "ON" : "OFF";
-  jdoc["status"]["cold"] = clim_led_on ? "ON" : "OFF";
-  jdoc["status"]["fanspeed"] = fan_speed;
-  jdoc["status"]["regul"] = "NOP";
+  json["status"]["fire"] = fire_detected;
+  json["status"]["heat"] = rad_led_on ? "ON" : "OFF";
+  json["status"]["cold"] = clim_led_on ? "ON" : "OFF";
+  json["status"]["fanspeed"] = fan_speed;
+  json["status"]["regul"] = "NOP";
 
   /*Reste des variables du json
   Pour le moment les valeurs sont nulles*/
-  jdoc["location"]["room"] = "NOP";
-  jdoc["location"]["gps"]["lat"] = 0.0;
-  jdoc["location"]["gps"]["lon"] = 0.0;
-  jdoc["location"]["address"] = "NOP";
+  json["location"]["room"] = "NOP";
+  json["location"]["gps"]["lat"] = 0.0;
+  json["location"]["gps"]["lon"] = 0.0;
+  json["location"]["address"] = "NOP";
 
-  jdoc["regul"]["lt"] = 0.0;
-  jdoc["regul"]["ht"] = 0.0;
+  json["regul"]["lt"] = 0.0;
+  json["regul"]["ht"] = 0.0;
 
-  jdoc["info"]["indent"] = "NOP";
-  jdoc["info"]["user"] = "NOP";
-  jdoc["info"]["loc"] = "NOP";
+  json["info"]["indent"] = "NOP";
+  json["info"]["user"] = "NOP";
+  json["info"]["loc"] = "NOP";
 
-  jdoc["net"]["uptime"] = "NOP";
-  jdoc["net"]["ssid"] = "NOP";
-  jdoc["net"]["mac"] = "NOP";
-  jdoc["net"]["ip"] = "NOP";
+  json["net"]["uptime"] = "NOP";
+  json["net"]["ssid"] = "NOP";
+  json["net"]["mac"] = "NOP";
+  json["net"]["ip"] = "NOP";
 
-  jdoc["reporthost"]["target_ip"] = "NOP";
-  jdoc["reporthost"]["target_port"] = 0;
-  jdoc["reporthost"]["sp"] = 0;
+  json["reporthost"]["target_ip"] = "NOP";
+  json["reporthost"]["target_port"] = 0;
+  json["reporthost"]["sp"] = 0;
 
-  serializeJson(jdoc, payload);
+  serializeJson(json, payload);
   Serial.println(payload);
 
-  //StaticJsonDocument<256> jdoc_new;
-  //deserializeJson(jdoc_new, payload);
+  //StaticJsonDocument<256> json_new;
+  //deserializeJson(json_new, payload);
 
-  //String print_brightness = jdoc_new["brightness"];
-  //String print_temperature = jdoc_new["temperature"];
+  //String print_brightness = json_new["brightness"];
+  //String print_temperature = json_new["temperature"];
 
   //Serial.println();
   //Serial.println("Reception and Deserialization of the String/Payload ");
