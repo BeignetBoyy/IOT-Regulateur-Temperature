@@ -27,8 +27,8 @@
             "0fae8ae4f57c18fb",
             "aabb52cd85a648bc",
             "2bd523d1ddf1ddd7",
-            "21cd460302e375e1",
-            "4bf0b48a38de0b0f"
+            "4bf0b48a38de0b0f",
+            "c53d3e7e2c6948ca"
         ],
         "x": 494,
         "y": 439,
@@ -74,7 +74,7 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 280,
+        "x": 300,
         "y": 320,
         "wires": []
     },
@@ -403,7 +403,7 @@
         "y": 560,
         "wires": [
             [
-                "21cd460302e375e1"
+                "c53d3e7e2c6948ca"
             ]
         ]
     },
@@ -473,28 +473,6 @@
         "wires": []
     },
     {
-        "id": "21cd460302e375e1",
-        "type": "ui_text",
-        "z": "8a55529076d3345c",
-        "g": "6de10d1f7eb50ab4",
-        "group": "ec58d8bcf48e83d7",
-        "order": 3,
-        "width": 0,
-        "height": 0,
-        "name": "",
-        "label": "Incendie détécté :",
-        "format": "{{msg.payload}}",
-        "layout": "row-left",
-        "className": "",
-        "style": false,
-        "font": "",
-        "fontSize": 16,
-        "color": "#000000",
-        "x": 850,
-        "y": 560,
-        "wires": []
-    },
-    {
         "id": "4bf0b48a38de0b0f",
         "type": "ui_text",
         "z": "8a55529076d3345c",
@@ -534,39 +512,23 @@
         "label": "Seuil Max de temperature",
         "tooltip": "",
         "group": "f72a74e974740c0f",
-        "order": 0,
+        "order": 1,
         "width": 0,
         "height": 0,
         "passthru": true,
         "outs": "end",
-        "topic": "topic",
-        "topicType": "msg",
+        "topic": "temp_max",
+        "topicType": "str",
         "min": 0,
         "max": "100",
         "step": 1,
         "className": "",
-        "x": 470,
-        "y": 740,
+        "x": 390,
+        "y": 700,
         "wires": [
-            []
-        ]
-    },
-    {
-        "id": "35c80fb21d6e5769",
-        "type": "function",
-        "z": "8a55529076d3345c",
-        "name": "Convert to JSON",
-        "func": "\nreturn msg;",
-        "outputs": 1,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 730,
-        "y": 740,
-        "wires": [
-            []
+            [
+                "8cf0b3992692adf0"
+            ]
         ]
     },
     {
@@ -588,6 +550,178 @@
         "x": 640,
         "y": 440,
         "wires": []
+    },
+    {
+        "id": "8cf0b3992692adf0",
+        "type": "template",
+        "z": "8a55529076d3345c",
+        "name": "Convert sliders to JSON",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "{\"{{topic}}\" : {{payload}}} ",
+        "output": "str",
+        "x": 710,
+        "y": 780,
+        "wires": [
+            [
+                "ea417623f9291f79",
+                "3654b44d8b9550cf"
+            ]
+        ]
+    },
+    {
+        "id": "9dfd7be774cbedf4",
+        "type": "ui_slider",
+        "z": "8a55529076d3345c",
+        "name": "",
+        "label": "Seuil Min de temperature",
+        "tooltip": "",
+        "group": "f72a74e974740c0f",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "outs": "end",
+        "topic": "temp_min",
+        "topicType": "str",
+        "min": 0,
+        "max": "100",
+        "step": 1,
+        "className": "",
+        "x": 390,
+        "y": 740,
+        "wires": [
+            [
+                "8cf0b3992692adf0"
+            ]
+        ]
+    },
+    {
+        "id": "ea417623f9291f79",
+        "type": "debug",
+        "z": "8a55529076d3345c",
+        "name": "Debug Sliders",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 940,
+        "y": 820,
+        "wires": []
+    },
+    {
+        "id": "bd9b216d6e1f0773",
+        "type": "ui_slider",
+        "z": "8a55529076d3345c",
+        "name": "",
+        "label": "Seuil Max du ventilateur",
+        "tooltip": "",
+        "group": "f72a74e974740c0f",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "outs": "end",
+        "topic": "fan_max",
+        "topicType": "str",
+        "min": 0,
+        "max": "100",
+        "step": 1,
+        "className": "",
+        "x": 390,
+        "y": 780,
+        "wires": [
+            [
+                "8cf0b3992692adf0"
+            ]
+        ]
+    },
+    {
+        "id": "c53d3e7e2c6948ca",
+        "type": "ui_led",
+        "z": "8a55529076d3345c",
+        "g": "6de10d1f7eb50ab4",
+        "order": 3,
+        "group": "ec58d8bcf48e83d7",
+        "width": 0,
+        "height": 0,
+        "label": "Incendie détecté",
+        "labelPlacement": "left",
+        "labelAlignment": "left",
+        "colorForValue": [
+            {
+                "color": "#ff0000",
+                "value": "true",
+                "valueType": "bool"
+            }
+        ],
+        "allowColorForValueInMessage": false,
+        "shape": "circle",
+        "showGlow": true,
+        "name": "",
+        "x": 810,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "6289b6d2f55514d0",
+        "type": "ui_slider",
+        "z": "8a55529076d3345c",
+        "name": "",
+        "label": "Seuil detection incendie Luminosité",
+        "tooltip": "",
+        "group": "f72a74e974740c0f",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "outs": "end",
+        "topic": "light_max_fire",
+        "topicType": "str",
+        "min": 0,
+        "max": "100",
+        "step": 1,
+        "className": "",
+        "x": 360,
+        "y": 860,
+        "wires": [
+            [
+                "8cf0b3992692adf0"
+            ]
+        ]
+    },
+    {
+        "id": "b15fbb7123a6ca8c",
+        "type": "ui_slider",
+        "z": "8a55529076d3345c",
+        "name": "",
+        "label": "Seuil detection incendie Temperature",
+        "tooltip": "",
+        "group": "f72a74e974740c0f",
+        "order": 5,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "outs": "end",
+        "topic": "temp_max_fire",
+        "topicType": "str",
+        "min": 0,
+        "max": "100",
+        "step": 1,
+        "className": "",
+        "x": 350,
+        "y": 820,
+        "wires": [
+            [
+                "8cf0b3992692adf0"
+            ]
+        ]
     },
     {
         "id": "5b9725065bf30fb2",
@@ -649,7 +783,7 @@
         "tab": "4d54c7bab257b638",
         "order": 1,
         "disp": true,
-        "width": 6,
+        "width": 15,
         "collapse": false,
         "className": ""
     },
@@ -672,12 +806,13 @@
         "hidden": false
     },
     {
-        "id": "cfba097a4d6c237b",
+        "id": "01a0915abbc312b4",
         "type": "global-config",
         "env": [],
         "modules": {
             "node-red-node-serialport": "2.0.3",
-            "node-red-dashboard": "3.6.6"
+            "node-red-dashboard": "3.6.6",
+            "node-red-contrib-ui-led": "0.4.11"
         }
     }
 ]
