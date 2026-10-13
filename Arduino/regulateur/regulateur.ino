@@ -51,8 +51,8 @@ void loop(void){
   bool fire_detected = false;
 
   // setup du json
-  char payload[256];
-  StaticJsonDocument<256> jdoc;
+  char payload[512];
+  StaticJsonDocument<512> jdoc;
 
   // Capteur luminosité
   brightness = analogRead(A5); //  lecture sur le pin analog 5
@@ -104,6 +104,30 @@ void loop(void){
   jdoc["status"]["heat"] = rad_led_on ? "ON" : "OFF";
   jdoc["status"]["cold"] = clim_led_on ? "ON" : "OFF";
   jdoc["status"]["fanspeed"] = fan_speed;
+  jdoc["status"]["regul"] = "NOP";
+
+  /*Reste des variables du json
+  Pour le moment les valeurs sont nulles*/
+  jdoc["location"]["room"] = "NOP";
+  jdoc["location"]["gps"]["lat"] = 0.0;
+  jdoc["location"]["gps"]["lon"] = 0.0;
+  jdoc["location"]["address"] = "NOP";
+
+  jdoc["regul"]["lt"] = 0.0;
+  jdoc["regul"]["ht"] = 0.0;
+
+  jdoc["info"]["indent"] = "NOP";
+  jdoc["info"]["user"] = "NOP";
+  jdoc["info"]["loc"] = "NOP";
+
+  jdoc["net"]["uptime"] = "NOP";
+  jdoc["net"]["ssid"] = "NOP";
+  jdoc["net"]["mac"] = "NOP";
+  jdoc["net"]["ip"] = "NOP";
+
+  jdoc["reporthost"]["target_ip"] = "NOP";
+  jdoc["reporthost"]["target_port"] = 0;
+  jdoc["reporthost"]["sp"] = 0;
 
   serializeJson(jdoc, payload);
   Serial.println(payload);
