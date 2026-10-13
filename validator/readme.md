@@ -64,8 +64,6 @@ Pour changer les fichiers utilisés, il suffit de modifier les noms passés à v
 
 ## Fonctionnement du programme
 
-## Fonctionnement du programme
-
 Le programme commence par charger le schéma JSON et les données de l'ESP32. Il vérifie d'abord que les deux fichiers sont corrects et que le schéma respecte les règles de JSON Schema.
 
 Draft202012Validator(schema) crée un validateur à partir du schéma. La méthode iter_errors(data) compare les données au schéma et récupère toutes les erreurs détectées.
@@ -77,6 +75,32 @@ Pour chaque erreur le programme construit un chemin : $ est la racine du JSON, .
 Si des erreurs sont présentes, la fonction retourne False. Sinon, elle affiche un message de réussite et retourne True.
 
 ---
+
+## Intégration dans Node-RED
+
+Le fichier validate_stdin.py permet d'utiliser le validateur directement dans le flow Node-RED 
+
+Il reçoit les données JSON directement depuis l'entrée standard (stdin). Donc pas nécessaire d'enregistrer chaque message reçu dans un fichier esp.json avant de le valider.
+
+Les deux scripts utilisent le même fichier schema.json :
+- validate.py sert à effectuer des tests manuels sur un fichier JSON.
+- validate_stdin.py sert à valider les messages reçus par Node-RED.
+
+---
+
+
+### Configuration du nœud Exec
+
+Dans la configuration du nœud Exec, renseigner la commande permettant de lancer Python et le script. Par exemple :
+
+```bash
+python -u "C:\chemin\vers\validate_stdin.py"
+```
+
+Remplacer C:\chemin\vers\validate_stdin.py par le chemin réel du validate_stdin.py sur l'ordinateur de l'utilisateur.
+
+Le mode d'exécution doit permettre au script de recevoir les messages sur son entrée standard (stdin). La version de validate_stdin.py utilisée doit également être compatible avec le mode choisi dans le nœud Exec.
+
 
 ## Schéma JSON attendu
 
