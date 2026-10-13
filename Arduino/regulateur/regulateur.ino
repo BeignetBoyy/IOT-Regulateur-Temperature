@@ -48,6 +48,7 @@ void loop(void){
 
   bool clim_led_on = false;
   bool rad_led_on = false;
+  bool fire_detected = false;
 
   // setup du json
   char payload[256];
@@ -55,12 +56,12 @@ void loop(void){
 
   // Capteur luminosité
   brightness = analogRead(A5); //  lecture sur le pin analog 5
-  jdoc["brightness"] = 4095 - brightness;
+  jdoc["status"]["light"] = 4095 - brightness;
 
   // Capteur temperature
   tempSensor.requestTemperaturesByIndex(0); // Le capteur 0 realise une acquisition
   t = tempSensor.getTempCByIndex(0); // Recuperation de la temperature en °C
-  jdoc["temperature"] = t;
+  jdoc["status"]["temperature"] = t;
 
   // -- Gestion des seuils -- //
   
@@ -68,13 +69,7 @@ void loop(void){
     //Serial.println("Temperature too high, starting climatisation");
     clim_led_on = true;
 
-    //Gestion Incendie
-    if(t > TEMP_FEU && brightness <= LUM_FEU){
-      //Serial.println("Incendie Détecté");
-      digitalWrite(2, HIGH);
-    }else{
-      digitalWrite(2, LOW);
-    }
+    fire_detected = t > TEMP_FEU && brightness <= LUM_FEU;
 
     // Gestion ventilo
     /*
@@ -105,15 +100,19 @@ void loop(void){
     strip_g = 255;
   }
 
+  jdoc["status"]["fire"] = fire_detected;
+  jdoc["status"]["heat"] = rad_led_on ? "ON" : "OFF";
+  jdoc["status"]["cold"] = clim_led_on ? "ON" : "OFF";
+  jdoc["status"]["fanspeed"] = fan_speed;
+
   serializeJson(jdoc, payload);
-  //Serial.println("Emission of the String/Payload ");
   Serial.println(payload);
 
-  StaticJsonDocument<256> jdoc_new;
-  deserializeJson(jdoc_new, payload);
+  //StaticJsonDocument<256> jdoc_new;
+  //deserializeJson(jdoc_new, payload);
 
-  String print_brightness = jdoc_new["brightness"];
-  String print_temperature = jdoc_new["temperature"];
+  //String print_brightness = jdoc_new["brightness"];
+  //String print_temperature = jdoc_new["temperature"];
 
   //Serial.println();
   //Serial.println("Reception and Deserialization of the String/Payload ");
@@ -129,6 +128,7 @@ void loop(void){
 
   digitalWrite(CLIMPIN, clim_led_on ? HIGH : LOW);
   digitalWrite(FANPIN, rad_led_on ? HIGH : LOW);
+  digitalWrite(2, fire_detected ? HIGH : LOW);
 
   //Serial.printf("FAN SPEED : %f", fan_speed);
   analogWrite(FANPIN, fan_speed);
