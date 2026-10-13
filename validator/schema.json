@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ESP32 Status",
+  "type": "object",
+  "required": [
+    "status",
+    "location",
+    "regul",
+    "info",
+    "net",
+    "reporthost"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "status": {
+      "type": "object",
+      "required": [
+        "temperature",
+        "light",
+        "regul",
+        "fire",
+        "heat",
+        "cold",
+        "fanspeed"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "temperature": {"type": "number"},
+        "light": {"type": "integer", "minimum": 0},
+        "regul": {"type": "string", "enum": ["RUNNING", "HALT"]},
+        "fire": {"type": "boolean"},
+        "heat": {"type": "string", "enum": ["ON", "OFF"]},
+        "cold": {"type": "string", "enum": ["ON", "OFF"]},
+        "fanspeed": {"type": "integer", "minimum": 0}
+      }
+    },
+    "location": {
+      "type": "object",
+      "required": ["room", "gps", "address"],
+      "additionalProperties": false,
+      "properties": {
+        "room": {"type": "string"},
+        "gps": {
+          "type": "object",
+          "required": ["lat", "lon"],
+          "additionalProperties": false,
+          "properties": {
+            "lat": {"type": "number", "minimum": -90, "maximum": 90},
+            "lon": {"type": "number", "minimum": -180, "maximum": 180}
+          }
+        },
+        "address": {"type": "string"}
+      }
+    },
+    "regul": {
+      "type": "object",
+      "required": ["lt", "ht"],
+      "additionalProperties": false,
+      "properties": {
+        "lt": {"type": "number"},
+        "ht": {"type": "number"}
+      }
+    },
+    "info": {
+      "type": "object",
+      "required": ["ident", "user", "loc"],
+      "additionalProperties": false,
+      "properties": {
+        "ident": {"type": "string"},
+        "user": {"type": "string"},
+        "loc": {"type": "string"}
+      }
+    },
+    "net": {
+      "type": "object",
+      "required": ["uptime", "ssid", "mac", "ip"],
+      "additionalProperties": false,
+      "properties": {
+        "uptime": {"type": "string"},
+        "ssid": {"type": "string"},
+        "mac": {"type": "string"},
+        "ip": {"type": "string"}
+      }
+    },
+    "reporthost": {
+      "type": "object",
+      "required": ["target_ip", "target_port", "sp"],
+      "additionalProperties": false,
+      "properties": {
+        "target_ip": {"type": "string"},
+        "target_port": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 65535
+        },
+        "sp": {"type": "integer"}
+      }
+    }
+  }
+}
