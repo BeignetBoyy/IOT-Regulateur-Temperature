@@ -3,6 +3,14 @@
 #include <Arduino.h>
 #include <Adafruit_NeoPixel.h>
 #include <ArduinoJson.h>
+#include "ESPAsyncWebServer.h"
+#include "AsyncTCP.h"
+#include "FS.h"
+#include <LittleFS.h>
+#include <WiFi.h>
+
+#include "wifi_utils.h"
+#include "routes.h"
 
 // --  Defintion des constantes -- //
 
@@ -18,6 +26,12 @@ OneWire oneWire(23); // Pour utiliser une entite oneWire sur le port 23 (Capteur
 DallasTemperature tempSensor(&oneWire); // Cette entite est utilisee par le capteur de temperature
 Adafruit_NeoPixel strip(NB_LEDS, STRIP_PIN, NEO_GRB + NEO_KHZ800); // Utilisé pour la LED Strip
 
+// setup du json
+char payload[512];
+StaticJsonDocument<512> json;
+
+AsyncWebServer server(80);
+
 // Seuils :
 float SH         = 30.00;  // Seuil superieur de temperature (Activation Clim)
 float SB         = 28.00;  // Seuil inferieur de temperature (Activation Radiateur)
@@ -27,6 +41,33 @@ float LUM_FEU    = 300.00; // Seuil de luminosité pour detection d'incendie
 
 void setup(void){
   Serial.begin(9600);
+
+  /* ------------- Setup Wifi et Little FS -------------------*/
+  String hostname = "Regulateur de temperature IOT";
+  wifi_connect_multi(hostname);               
+  
+  if (WiFi.status() == WL_CONNECTED){
+    Serial.print("\nWiFi connected : yes ! \n"); 
+    wifi_printstatus(0);  
+  } 
+  else {
+    Serial.print("\nWiFi connected : no ! \n"); 
+    //  ESP.restart();
+  }
+
+  if(!LittleFS.begin(true)){
+      Serial.println("An Error has occurred while mounting LittleFS");
+      return;
+  }
+
+  // Setup routes of the ESP Web server
+  setup_http_routes(&server);
+  
+  // Start ESP Web server
+  server.begin();
+
+  // ---------------- SETUP CAPTEURS ------------ //
+
   tempSensor.begin(); // Init capteur temp
   strip.begin(); // Init LED Strip
 
@@ -38,7 +79,7 @@ void setup(void){
 }
 
 void loop(void){
-  float t;
+  float temp;
   int brightness;
   float fan_speed = 0;
 
@@ -50,13 +91,73 @@ void loop(void){
   bool rad_led_on = false;
   bool fire_detected = false;
 
-  // setup du json
-  char payload[512];
-  StaticJsonDocument<512> json;
-
   // Recuperation des variables depuis Serial in
+  updateFromSliders();
+
+  // Capteur luminosité
+  brightness = analogRead(A5); //  lecture sur le pin analog 5
+
+  // Capteur temperature
+  tempSensor.requestTemperaturesByIndex(0); // Le capteur 0 realise une acquisition
+  temp = tempSensor.getTempCByIndex(0); // Recuperation de la temperature en °C
+
+  // -- Gestion des seuils -- //
+  
+  if(temp > SH){ // Si temperature trop elevé
+    //Serial.println("Temperature too high, starting climatisation");
+    clim_led_on = true;
+
+    fire_detected = temp > TEMP_FEU && brightness <= LUM_FEU;
+
+    // Gestion ventilo
+    /*
+    Pour avoir une augmentation graduelle de la vitesse du ventilateur, 
+    on a un seuil inferieur et un seuil superieur. Une fois que la temperature a passée le seuil inferieur,
+    on commence l'acceleration en prennant la difference entre la temperature actuelle et la borne superieure.
+    Puis on converti cette difference en une valeur entre 0 et 255. 
+    Au dessus du seuil superieur la vitesse du ventilateur reste constante.
+    */
+    float fan_range = SH_VENTILO - SH;
+    float temp_diff = temp < SH_VENTILO ? SH_VENTILO - temp : 0.0;
+
+    //on inverse la difference puis produit en croix pour obtenir une valeur entre 0 et 255
+    fan_speed = ((fan_range - temp_diff) / fan_range) * 255;
 
 
+    // Couleur de la LED Strip en Rouge 
+    strip_r = 255;
+
+  }else if(temp < SB){ // Si temperature trop faible
+    //Serial.println("Temperature too low, starting heater");
+
+    rad_led_on = true;
+
+    strip_b = 255;
+  }else{
+    //Serial.println("Temperature is ideal");
+    strip_g = 255;
+  }
+
+  //Mise a jour du json
+  updateAndSendJson(fire_detected, clim_led_on, rad_led_on, brightness, temp, fan_speed);
+
+  digitalWrite(CLIMPIN, clim_led_on ? HIGH : LOW);
+  digitalWrite(FANPIN, rad_led_on ? HIGH : LOW);
+  digitalWrite(2, fire_detected ? HIGH : LOW);
+
+  //Serial.printf("FAN SPEED : %f", fan_speed);
+  analogWrite(FANPIN, fan_speed);
+  
+  // Allumage des leds de la Strip
+  for(int i=0; i<NB_LEDS; i++) {
+    strip.setPixelColor(i, strip.Color(strip_r, strip_g, strip_b));
+  }
+  strip.show();
+
+  delay(1000); // millis ! attention convertir prend du temps !
+}
+
+void updateFromSliders(){
   if (Serial.available() > 0) {
     String incomingString = Serial.readString();
     incomingString.trim(); 
@@ -79,53 +180,12 @@ void loop(void){
     if (temp_max_fire != "null") {TEMP_FEU = temp_max_fire.toFloat();}
     if (light_max_fire != "null") {LUM_FEU = light_max_fire.toFloat();}
   }
+}
 
-  // Capteur luminosité
-  brightness = analogRead(A5); //  lecture sur le pin analog 5
+void updateAndSendJson(bool fire_detected, bool clim_led_on, bool rad_led_on, int brightness, float temp, float fan_speed){
+
   json["status"]["light"] = 4095 - brightness;
-
-  // Capteur temperature
-  tempSensor.requestTemperaturesByIndex(0); // Le capteur 0 realise une acquisition
-  t = tempSensor.getTempCByIndex(0); // Recuperation de la temperature en °C
-  json["status"]["temperature"] = t;
-
-  // -- Gestion des seuils -- //
-  
-  if(t > SH){ // Si temperature trop elevé
-    //Serial.println("Temperature too high, starting climatisation");
-    clim_led_on = true;
-
-    fire_detected = t > TEMP_FEU && brightness <= LUM_FEU;
-
-    // Gestion ventilo
-    /*
-    Pour avoir une augmentation graduelle de la vitesse du ventilateur, 
-    on a un seuil inferieur et un seuil superieur. Une fois que la temperature a passée le seuil inferieur,
-    on commence l'acceleration en prennant la difference entre la temperature actuelle et la borne superieure.
-    Puis on converti cette difference en une valeur entre 0 et 255. 
-    Au dessus du seuil superieur la vitesse du ventilateur reste constante.
-    */
-    float fan_range = SH_VENTILO - SH;
-    float temp_diff = t < SH_VENTILO ? SH_VENTILO - t : 0.0;
-
-    //on inverse la difference puis produit en croix pour obtenir une valeur entre 0 et 255
-    fan_speed = ((fan_range - temp_diff) / fan_range) * 255;
-
-
-    // Couleur de la LED Strip en Rouge 
-    strip_r = 255;
-
-  }else if(t < SB){ // Si temperature trop faible
-    //Serial.println("Temperature too low, starting heater");
-
-    rad_led_on = true;
-
-    strip_b = 255;
-  }else{
-    //Serial.println("Temperature is ideal");
-    strip_g = 255;
-  }
-
+  json["status"]["temperature"] = temp;
   json["status"]["fire"] = fire_detected;
   json["status"]["heat"] = rad_led_on ? "ON" : "OFF";
   json["status"]["cold"] = clim_led_on ? "ON" : "OFF";
@@ -139,55 +199,22 @@ void loop(void){
   json["location"]["gps"]["lon"] = 0.0;
   json["location"]["address"] = "NOP";
 
-  json["regul"]["lt"] = 0.0;
-  json["regul"]["ht"] = 0.0;
+  json["regul"]["lt"] = SB;
+  json["regul"]["ht"] = SH;
 
   json["info"]["indent"] = "NOP";
   json["info"]["user"] = "NOP";
   json["info"]["loc"] = "NOP";
 
   json["net"]["uptime"] = "NOP";
-  json["net"]["ssid"] = "NOP";
-  json["net"]["mac"] = "NOP";
-  json["net"]["ip"] = "NOP";
+  json["net"]["ssid"] = WiFi.SSID();
+  json["net"]["mac"] = WiFi.macAddress();
+  json["net"]["ip"] = WiFi.localIP().toString();
 
   json["reporthost"]["target_ip"] = "NOP";
   json["reporthost"]["target_port"] = 0;
   json["reporthost"]["sp"] = 0;
 
   serializeJson(json, payload);
-  Serial.println(payload);
-
-  //StaticJsonDocument<256> json_new;
-  //deserializeJson(json_new, payload);
-
-  //String print_brightness = json_new["brightness"];
-  //String print_temperature = json_new["temperature"];
-
-  //Serial.println();
-  //Serial.println("Reception and Deserialization of the String/Payload ");
-
-  //Serial.print("\nBrightness: ");
-  //Serial.print(print_brightness); // Valeur max du capteur - valeur actuelle du capteur -> valeur qui augmente avec le niveau de luminosité
-  //Serial.print("\n");
-  
-  //Serial.print("Temperature: ");
-  //Serial.print(print_temperature);
-  //Serial.print(" C\n\n");
-
-
-  digitalWrite(CLIMPIN, clim_led_on ? HIGH : LOW);
-  digitalWrite(FANPIN, rad_led_on ? HIGH : LOW);
-  digitalWrite(2, fire_detected ? HIGH : LOW);
-
-  //Serial.printf("FAN SPEED : %f", fan_speed);
-  analogWrite(FANPIN, fan_speed);
-  
-  // Allumage des leds de la Strip
-  for(int i=0; i<NB_LEDS; i++) {
-    strip.setPixelColor(i, strip.Color(strip_r, strip_g, strip_b));
-  }
-  strip.show();
-
-  delay(1000); // millis ! attention convertir prend du temps !
+  //Serial.println(payload);
 }
