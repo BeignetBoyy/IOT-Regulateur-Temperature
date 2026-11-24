@@ -8,6 +8,7 @@
 #include "FS.h"
 #include <LittleFS.h>
 #include <WiFi.h>
+#include <HTTPClient.h>
 
 #include "wifi_utils.h"
 #include "routes.h"
@@ -19,8 +20,10 @@
 #define CLIMPIN   19  // LED climatisation (Bleu)
 #define RADPIN    21  // LED radiateur (Rouge)
 #define FANPIN    27  // Ventilateur
-
 #define NB_LEDS 5 // Nombres de LED de la LED strip
+
+#define USE_SERIAL Serial
+
 
 OneWire oneWire(23); // Pour utiliser une entite oneWire sur le port 23 (Capteur de temperature)
 DallasTemperature tempSensor(&oneWire); // Cette entite est utilisee par le capteur de temperature
@@ -30,6 +33,7 @@ Adafruit_NeoPixel strip(NB_LEDS, STRIP_PIN, NEO_GRB + NEO_KHZ800); // Utilisé p
 char payload[512];
 StaticJsonDocument<512> json;
 
+unsigned long lastReport = 0;
 AsyncWebServer server(80);
 
 // Seuils :
@@ -39,24 +43,29 @@ float SH_VENTILO = 35.00;  // Seuil superieur du ventilateur (Entre 30 et 35°C,
 float TEMP_FEU   = 31.00;  // Seuil de temperature pour detection d'incendie
 float LUM_FEU    = 300.00; // Seuil de luminosité pour detection d'incendie
 
+// Host for periodic data report
+String target_ip = "";
+int target_port = 1880;
+int target_sp = 0; // Remaining time before the ESP stops transmitting
+
 void setup(void){
-  Serial.begin(9600);
+  USE_SERIAL.begin(9600);
 
   /* ------------- Setup Wifi et Little FS -------------------*/
   String hostname = "Regulateur de temperature IOT";
   wifi_connect_multi(hostname);               
   
   if (WiFi.status() == WL_CONNECTED){
-    Serial.print("\nWiFi connected : yes ! \n"); 
+    USE_SERIAL.print("\nWiFi connected : yes ! \n"); 
     wifi_printstatus(0);  
   } 
   else {
-    Serial.print("\nWiFi connected : no ! \n"); 
+    USE_SERIAL.print("\nWiFi connected : no ! \n"); 
     //  ESP.restart();
   }
 
   if(!LittleFS.begin(true)){
-      Serial.println("An Error has occurred while mounting LittleFS");
+      USE_SERIAL.println("An Error has occurred while mounting LittleFS");
       return;
   }
 
@@ -79,6 +88,8 @@ void setup(void){
 }
 
 void loop(void){
+  int delai = 1000;
+
   float temp;
   int brightness;
   float fan_speed = 0;
@@ -139,7 +150,8 @@ void loop(void){
   }
 
   //Mise a jour du json
-  updateAndSendJson(fire_detected, clim_led_on, rad_led_on, brightness, temp, fan_speed);
+  updateAndSerializeJson(fire_detected, clim_led_on, rad_led_on, brightness, temp, fan_speed);
+  DoSmtg(delai);
 
   digitalWrite(CLIMPIN, clim_led_on ? HIGH : LOW);
   digitalWrite(FANPIN, rad_led_on ? HIGH : LOW);
@@ -154,12 +166,12 @@ void loop(void){
   }
   strip.show();
 
-  delay(1000); // millis ! attention convertir prend du temps !
+  delay(delai); // millis ! attention convertir prend du temps !
 }
 
 void updateFromSliders(){
-  if (Serial.available() > 0) {
-    String incomingString = Serial.readString();
+  if (USE_SERIAL.available() > 0) {
+    String incomingString = USE_SERIAL.readString();
     incomingString.trim(); 
 
     StaticJsonDocument<256> incoming_json;
@@ -182,7 +194,7 @@ void updateFromSliders(){
   }
 }
 
-void updateAndSendJson(bool fire_detected, bool clim_led_on, bool rad_led_on, int brightness, float temp, float fan_speed){
+void updateAndSerializeJson(bool fire_detected, bool clim_led_on, bool rad_led_on, int brightness, float temp, float fan_speed){
 
   json["status"]["light"] = 4095 - brightness;
   json["status"]["temperature"] = temp;
@@ -211,10 +223,53 @@ void updateAndSendJson(bool fire_detected, bool clim_led_on, bool rad_led_on, in
   json["net"]["mac"] = WiFi.macAddress();
   json["net"]["ip"] = WiFi.localIP().toString();
 
-  json["reporthost"]["target_ip"] = "NOP";
-  json["reporthost"]["target_port"] = 0;
-  json["reporthost"]["sp"] = 0;
+  json["reporthost"]["target_ip"] = target_ip;
+  json["reporthost"]["target_port"] = target_port;
+  json["reporthost"]["sp"] = target_sp;
 
   serializeJson(json, payload);
   //Serial.println(payload);
+}
+
+void DoSmtg(int delai){
+  static uint32_t tick = 0;
+  if ( millis() - tick < delai) { 
+    return; 
+  }
+  else {/* Do stuff here every 10 second */ 
+    tick = millis();
+
+    if (target_ip != "" && target_sp > 0) {
+      if (millis() - lastReport >= (unsigned long)target_sp * 1000UL) {
+        Serial.println("Sending periodic report!");
+
+        String url = "http://" + target_ip + ":" + target_port + "/esp";
+        sendJsonToServer(url.c_str());
+        lastReport = millis();
+      }
+    }
+  } 
+}
+
+void sendJsonToServer(const char* UrlServer) {
+  HTTPClient http; // http protocol entity => client
+
+  USE_SERIAL.printf("Requesting URL : %s\n", UrlServer);
+
+  // Configure traged server and url
+  http.begin(UrlServer);
+  http.addHeader("Content-Type", "application/json"); 
+  
+  // Connect and Send HTTP request
+  int httpResponseCode = http.POST(payload);
+
+  // Get the response => will fill payload String
+  if (httpResponseCode>0) {
+    USE_SERIAL.printf("HTTP Response code : %d \n", httpResponseCode);
+  }
+  else {
+    USE_SERIAL.printf("Error code on HTTP POST Request : %d \n", httpResponseCode);
+  }
+  // End connection and Free resources
+  http.end();
 }

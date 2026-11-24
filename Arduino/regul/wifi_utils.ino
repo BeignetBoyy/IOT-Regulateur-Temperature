@@ -115,6 +115,7 @@ void wifi_connect_multi(String hostname){
   wm.addAP("Bbox-EA6814CF","Hvtx6bGfD4Sn7PCs2r");
   wm.addAP("IOT","iotmiage");
   //wm.addAP("test","21112004");
+  wm.addAP("SFR_7A4E","nz78hfll5im1znn3xxej");
   
   WiFi.mode(WIFI_OFF);   
   WiFi.mode(WIFI_STA); // Set WiFi to station mode 

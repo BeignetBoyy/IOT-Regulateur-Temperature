@@ -61,7 +61,60 @@ void setup_http_routes(AsyncWebServer* server) {
   #endif
   
   server->on("/json", HTTP_GET, [](AsyncWebServerRequest *request){
-      request->send_P(200, "text/plain", payload);
+    USE_SERIAL.printf("GET /json request \n");
+    request->send(200, "application/json", payload);
+  });
+
+  server->on("/temperature", HTTP_GET, [](AsyncWebServerRequest *request){
+    String temp = json["status"]["temperature"];
+    request->send(200, "text/plain", temp);
+  });
+
+  server->on("/light", HTTP_GET, [](AsyncWebServerRequest *request){
+    String light = json["status"]["light"];
+    request->send(200, "text/plain", light);
+  });
+
+
+  server->on("/value", HTTP_GET, [](AsyncWebServerRequest *request){
+    USE_SERIAL.printf("GET /value request \n"); 
+    StaticJsonDocument<256> send_json;
+
+    if (request->hasArg("light")){
+      send_json["light"] = json["status"]["light"];
+    }
+    if (request->hasArg("temperature")){
+      send_json["temperature"] = json["status"]["temperature"];
+    }
+    if (request->hasArg("fire")){
+      send_json["fire"] = json["status"]["fire"];
+    }
+    if (request->hasArg("lt")){
+      send_json["lt"] = json["regul"]["lt"];
+    }
+    if (request->hasArg("ht")){
+      send_json["ht"] = json["regul"]["ht"];
+    }
+
+    if (send_json.isNull()){
+      send_json["temperature"] = json["status"]["temperature"];
+      send_json["light"] = json["status"]["light"];
+      send_json["fire"] = json["status"]["fire"];
+      send_json["lt"] = json["regul"]["lt"];
+      send_json["ht"] = json["regul"]["ht"];
+    }
+
+    String response;
+    serializeJson(send_json, response);
+
+    request->send(200, "application/json", response);
+  });
+
+  server->on("/set", HTTP_GET, [](AsyncWebServerRequest *request){
+    if (request->hasArg("light_threshold")) { // request may have arguments
+      LUM_FEU = atoi(request->arg("light_threshold").c_str());
+      request->send_P(200, "text/plain", "Threshold Set !");
+    }
   });
 
   server->on("/target", HTTP_POST, [](AsyncWebServerRequest *request){
